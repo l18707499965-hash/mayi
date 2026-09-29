@@ -1,58 +1,80 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
+import Script from 'next/script';
 import './globals.css';
+import { SITE } from '@/lib/site';
+import { Header } from '@/components/layout/Header';
+import { Footer } from '@/components/layout/Footer';
+
+const baseUrl = SITE.url.replace(/\/$/, '');
 
 export const metadata: Metadata = {
+  metadataBase: new URL(baseUrl),
   title: {
-    default: '新应用 | 扣子编程',
-    template: '%s | 扣子编程',
+    default: `${SITE.name}官网 - ${SITE.name}安卓版免费下载 | 免费高清影视追剧App`,
+    template: `%s | ${SITE.name}官网`,
   },
-  description:
-    '扣子编程是一款一站式云端 Vibe Coding 开发平台。通过对话轻松构建智能体、工作流和网站，实现从创意到上线的无缝衔接。',
-  keywords: [
-    '扣子编程',
-    'Coze Code',
-    'Vibe Coding',
-    'AI 编程',
-    '智能体搭建',
-    '工作流搭建',
-    '网站搭建',
-    '网站部署',
-    '全栈开发',
-    'AI 工程师',
-  ],
-  authors: [{ name: 'Coze Code Team', url: 'https://code.coze.cn' }],
-  generator: 'Coze Code',
-  // icons: {
-  //   icon: '',
-  // },
+  description: SITE.description,
+  keywords: [...SITE.keywords],
+  applicationName: SITE.name,
+  authors: [{ name: SITE.name }],
+  generator: '蚂蚁影视',
+  category: '影音播放',
+  icons: {
+    icon: '/ant-icon.png',
+    shortcut: '/ant-icon.png',
+    apple: '/ant-icon.png',
+  },
+  manifest: '/site.webmanifest',
+  alternates: {
+    canonical: '/',
+  },
+  formatDetection: { telephone: false, email: false },
   openGraph: {
-    title: '扣子编程 | 你的 AI 工程师已就位',
-    description:
-      '我正在使用扣子编程 Vibe Coding，让创意瞬间上线。告别拖拽，拥抱心流。',
-    url: 'https://code.coze.cn',
-    siteName: '扣子编程',
-    locale: 'zh_CN',
     type: 'website',
-    // images: [
-    //   {
-    //     url: '',
-    //     width: 1200,
-    //     height: 630,
-    //     alt: '扣子编程 - 你的 AI 工程师',
-    //   },
-    // ],
+    locale: 'zh_CN',
+    url: baseUrl,
+    siteName: SITE.name,
+    title: `${SITE.name}官网 - 免费高清影视追剧App`,
+    description: SITE.description,
+    images: [{ url: `${baseUrl}/ant-icon.png`, width: 512, height: 512, alt: SITE.name }],
   },
-  // twitter: {
-  //   card: 'summary_large_image',
-  //   title: 'Coze Code | Your AI Engineer is Here',
-  //   description:
-  //     'Build and deploy full-stack applications through AI conversation. No env setup, just flow.',
-  //   // images: [''],
-  // },
+  twitter: {
+    card: 'summary',
+    title: `${SITE.name}官网 - 免费高清影视追剧App`,
+    description: SITE.description,
+    images: [`${baseUrl}/ant-icon.png`],
+  },
   robots: {
     index: true,
     follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+      'max-video-preview': -1,
+    },
   },
+};
+
+export const viewport: Viewport = {
+  themeColor: '#0B1220',
+  width: 'device-width',
+  initialScale: 1,
+  colorScheme: 'light',
+};
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'SoftwareApplication',
+  name: SITE.name,
+  applicationCategory: 'EntertainmentApplication',
+  operatingSystem: 'Android',
+  description: SITE.description,
+  url: baseUrl,
+  image: `${baseUrl}/ant-icon.png`,
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'CNY' },
+  fileSize: SITE.downloadFileSize,
 };
 
 export default function RootLayout({
@@ -61,9 +83,28 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`antialiased`}>
-        {children}
+    <html lang="zh-CN" className="scroll-smooth">
+      <body className="flex min-h-screen flex-col bg-white font-sans text-slate-900 antialiased">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+        <Header />
+        <main className="flex-1">{children}</main>
+        <Footer />
+
+        {/* 百度统计 */}
+        <Script id="baidu-analytics" strategy="afterInteractive">
+          {`
+            var _hmt = _hmt || [];
+            (function() {
+              var hm = document.createElement("script");
+              hm.src = "https://hm.baidu.com/hm.js?${SITE.baiduAnalyticsId}";
+              var s = document.getElementsByTagName("script")[0];
+              s.parentNode.insertBefore(hm, s);
+            })();
+          `}
+        </Script>
       </body>
     </html>
   );

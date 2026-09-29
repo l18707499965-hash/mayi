@@ -1,0 +1,24 @@
+{
+  "name": "蚂蚁影视官网",
+  "short_name": "蚂蚁影视",
+  "description": "蚂蚁影视 - 免费高清影视追剧App，海量电影、电视剧、综艺、动漫免费在线看，安卓版免费下载。",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0B1220",
+  "theme_color": "#0B1220",
+  "lang": "zh-CN",
+  "icons": [
+    {
+      "src": "/ant-icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/ant-icon.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

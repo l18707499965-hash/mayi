@@ -10,8 +10,8 @@ const baseUrl = SITE.url.replace(/\/$/, '');
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
   title: {
-    default: `${SITE.name}官网 - ${SITE.name}安卓版免费下载 | 免费高清影视追剧App`,
-    template: `%s | ${SITE.name}官网`,
+    default: `${SITE.name} - 免费高清影视追剧App | ${SITE.name}官网安卓版免费下载`,
+    template: `${SITE.name} - %s | 官网`,
   },
   description: SITE.description,
   keywords: [...SITE.keywords],
